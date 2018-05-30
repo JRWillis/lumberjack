@@ -99,13 +99,60 @@ $gateway = $app->make('\MyNamespace\PaymentGateway');
 
 
 ## Configuration
-TODO
+Lumberjack comes with a small selection of config files already defined and used for various WP features. You can also add new config files in, which will be automatically bootstrapped in.
+
+### Image sizes
+When you need to register new image sizes, they can be added in the `config/images.php` file, using the following format.
+
+```php
+[
+    'name' => 'thumb'
+    'width' => 100,
+    'height' => 200,
+    'crop' => true,
+],
+```
+
+WordPress documentation for [crop options](https://developer.wordpress.org/reference/functions/add_image_size/#crop-mode)
+
+### Menus
+When you need to register new menus, they can be added in the `config/menus.php` file, using the following format.
+
+```php
+'menus' => [
+    'main-nav' => __('Main Navigation'),
+    'footer-nav' => __('Footer Navigation'),
+],
+```
+
+### Timber
+In here you can change or add new locations for Timber to look for template files.
+
+```php
+'paths' => [
+    'views',
+],
+```
+
+### Custom config files
+You can add in any config files you like, so long as it's in the `Config` dir an returns an array.
+
+To use the config files you would use the `Config` class, as follows, where app is the file App.php within Config directory, and debug being an array key within the returned config array of App.
+
+```php
+Config::get('app.debug')
+```
 
 ## Post Types
-TODO
+
+When you need to register a new post type, they can be added to the `PostTypes` directory, copying the `Example.php` format, with the class being named your singular posttype name, ie 'Slide' or 'Location'
+
+```php
+class Example extends Post
+```
 
 ## Actions & Filters
-TODO
+TODO - talk with Jo
 
 ## Router
 The Lumberjack Router is based on the standalone [Rareloop Router](https://github.com/Rareloop/router) but utilised a Facade to make setup and access simpler.
@@ -116,7 +163,6 @@ Note: Route closures and controller functions are automatically dependency injec
 ### Creating Routes
 
 #### Map
-
 Creating a route is done using the `map` function:
 
 ```php
@@ -193,12 +239,39 @@ Router::group('prefix', function ($group) {
 TODO
 
 #### Route based middleware
+
+
 #### Global middleware
 
 ## Controllers
-
 ### WordPress Controllers
 TODO
+
+Example:
+
+```php
+// page-home.php
+namespace App;
+
+use Rareloop\Lumberjack\Http\Responses\TimberResponse;
+use Rareloop\Lumberjack\Page;
+use Timber\Timber;
+
+class PageController
+{
+    public function handle()
+    {
+        $context = Timber::get_context();
+        $page = new Page();
+
+        $context['post'] = $page;
+        $context['title'] = $page->title;
+        $context['content'] = $page->content;
+
+        return new TimberResponse('templates/generic-page.twig', $context);
+    }
+}
+```
 
 ### Route Controllers
 If you'd rather use a class to group related route actions together you can pass a Controller String to `map()` instead of a closure. The string takes the format `{name of class}@{name of method}`. It is important that you use the complete namespace with the class name.
@@ -225,7 +298,7 @@ Router::map(['GET'], 'route/uri', '\MyNamespace\TestController@testMethod');
 TODO
 
 ## Service Providers
-Lumberjack Service Providers are the central place for all application bootstrapping. Utilizing two main functions, register and boot (executed in that order). Within the register method you should only bind things into the instance, everything else should be done within the boot function, which is executed once *ALL* services are registered.
+Lumberjack uses the Service Providers are the central place for all application bootstrapping. Utilizing two main functions, register and boot (executed in that order). Within the register method you should only bind things into the instance, everything else should be done within the boot function, which is executed once *ALL* services are registered.
 
 ## Facades
 Lumberjack uses the [Blast Facades](https://github.com/phpthinktank/blast-facades) library.
