@@ -112,7 +112,6 @@ When you need to register new image sizes, they can be added in the `config/imag
     'crop' => true,
 ],
 ```
-
 WordPress documentation for [crop options](https://developer.wordpress.org/reference/functions/add_image_size/#crop-mode)
 
 ### Menus
@@ -298,7 +297,7 @@ Router::map(['GET'], 'route/uri', '\MyNamespace\TestController@testMethod');
 TODO
 
 ## Service Providers
-Lumberjack uses the Service Providers are the central place for all application bootstrapping. Utilizing two main functions, register and boot (executed in that order). Within the register method you should only bind things into the instance, everything else should be done within the boot function, which is executed once *ALL* services are registered.
+Lumberjack Service Providers are the central place for all application bootstrapping. Utilizing two main functions, register and boot (executed in that order). Within the register method you should only bind things into the instance, everything else should be done within the boot function, which is executed once *ALL* services are registered.
 
 ## Facades
 Lumberjack uses the [Blast Facades](https://github.com/phpthinktank/blast-facades) library.
