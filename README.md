@@ -97,7 +97,6 @@ $gateway = $app->make('\MyNamespace\PaymentGateway');
 // $gateway is instance of '\MyNamespace\StripePaymentGateway'
 ```
 
-
 ## Configuration
 Lumberjack comes with a small selection of config files already defined and used for various WP features. You can also add new config files in, which will be automatically bootstrapped in.
 
@@ -159,6 +158,9 @@ The Lumberjack Router is based on the standalone [Rareloop Router](https://githu
 Note: Route closures and controller functions are automatically dependency injected from the container.
 
 ### HTTP Request/Response Messages
+[PSR-7](https://www.php-fig.org/psr/psr-7/)
+
+
 ### Creating Routes
 
 #### Map
@@ -340,4 +342,8 @@ class Log extends AbstractFacade
 ```
 
 ## Exceptions
-TODO
+In order to better handle exceptions, we have utilised the XX package. WIthin the `app/Exceptions/Handler.php` file, you can see two functions, report() and render().
+
+Report checks if this is an exception that should be reported on, ie ISN'T in the $dontReport array and then initialises the logger.
+
+Render handles what to then do with the exception, in our demonstration we have it checking if we have debugging enabled in the config, and if not, sending you to a generic error template (whoops.twig).
